@@ -7,7 +7,6 @@ const Home = () => {
   const [editIndex, setEditIndex] = React.useState(null);
 
   const handleChange = (e) => {
-    // setForm({ ...form, [e.target.name]: e.target.value });  its work without database
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
@@ -18,13 +17,12 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (editIndex !== null) {
-      console.log("edit index", editIndex);
       handleUpdate(editIndex);
     } else {
       try {
-        const data = await baseURL.post("/add", form);
-        if (data?.success) {
-          alert(data?.success);
+        const da = await baseURL.post("/add", form);
+        if (da.data?.success) {
+          alert("data added successfully");
           setForm({ username: "", password: "" });
           fetchalldata();
         } else {
@@ -68,7 +66,7 @@ const Home = () => {
       setForm({ username: "", password: "" });
       fetchalldata();
       setEditIndex(null);
-      console.log("hellllll", form);
+      
       alert(data?.message);
     } else {
       alert("error");
@@ -80,17 +78,17 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-2xl">
-        <h2 className="text-3xl font-bold text-center mb-8 text-purple-700">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 px-2 sm:px-4">
+      <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-lg w-full max-w-2xl">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8 text-purple-700">
           SafePass App
         </h2>
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
           {/* Username Field */}
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
             <label
               htmlFor="username"
-              className="w-full md:w-1/4 text-sm font-medium text-gray-700 mb-2 md:mb-0"
+              className="w-full sm:w-1/4 text-sm font-medium text-gray-700 mb-2 sm:mb-0"
             >
               Username
             </label>
@@ -107,10 +105,10 @@ const Home = () => {
           </div>
 
           {/* Password Field */}
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
             <label
               htmlFor="password"
-              className="w-full md:w-1/4 text-sm font-medium text-gray-700 mb-2 md:mb-0"
+              className="w-full sm:w-1/4 text-sm font-medium text-gray-700 mb-2 sm:mb-0"
             >
               Password
             </label>
@@ -130,7 +128,7 @@ const Home = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="bg-purple-600 text-white px-8 py-2 rounded-lg hover:bg-purple-700 transition duration-200 font-semibold"
+              className="w-full sm:w-auto bg-purple-600 text-white px-8 py-2 rounded-lg hover:bg-purple-700 transition duration-200 font-semibold"
             >
               {editIndex !== null ? "Update" : "Submit"}
             </button>
@@ -138,17 +136,17 @@ const Home = () => {
         </form>
 
         {/* Users List */}
-        <div className="mt-10">
-          <h3 className="text-xl font-semibold mb-4 text-purple-600">
+        <div className="mt-8 sm:mt-10">
+          <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-purple-600">
             User List
           </h3>
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200 rounded-lg">
+            <table className="min-w-full bg-white border border-gray-200 rounded-lg text-sm sm:text-base">
               <thead>
                 <tr>
-                  <th className="py-2 px-4 border-b">Username</th>
-                  <th className="py-2 px-4 border-b">Password</th>
-                  <th className="py-2 px-4 border-b">Actions</th>
+                  <th className="py-2 px-2 sm:px-4 border-b">Username</th>
+                  <th className="py-2 px-2 sm:px-4 border-b">Password</th>
+                  <th className="py-2 px-2 sm:px-4 border-b">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -159,11 +157,11 @@ const Home = () => {
                     </td>
                   </tr>
                 ) : (
-                  users.map((user, idx) => (
+                  users.slice().reverse().map((user, idx) => (
                     <tr key={idx}>
-                      <td className="py-2 px-4 border-b">{user.username}</td>
-                      <td className="py-2 px-4 border-b">{user.password}</td>
-                      <td className="py-2 px-4 border-b flex gap-2">
+                      <td className="py-2 px-2 sm:px-4 border-b break-all">{user.username}</td>
+                      <td className="py-2 px-2 sm:px-4 border-b break-all">{user.password}</td>
+                      <td className="py-2 px-2 sm:px-4 border-b flex flex-col sm:flex-row gap-2">
                         <button
                           className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                           onClick={() => handleEdit(user._id, idx)}
